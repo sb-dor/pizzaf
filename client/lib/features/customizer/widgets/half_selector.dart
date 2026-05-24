@@ -1,32 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:pizzaf/theme/app_theme.dart';
 import 'package:shared/shared.dart';
 
-import '../../../theme/app_theme.dart';
-
 class HalfSelector extends StatelessWidget {
+  const HalfSelector({super.key, required this.selectedSide, required this.onChanged});
   final HalfSide selectedSide;
   final ValueChanged<HalfSide> onChanged;
-
-  const HalfSelector({
-    super.key,
-    required this.selectedSide,
-    required this.onChanged,
-  });
 
   @override
   Widget build(BuildContext context) {
     return SegmentedButton<HalfSide>(
       segments: const [
-        ButtonSegment(
-          value: HalfSide.left,
-          icon: Icon(Icons.arrow_left),
-          label: Text('Left'),
-        ),
-        ButtonSegment(
-          value: HalfSide.right,
-          icon: Icon(Icons.arrow_right),
-          label: Text('Right'),
-        ),
+        ButtonSegment(value: HalfSide.left, icon: Icon(Icons.arrow_left), label: Text('Left')),
+        ButtonSegment(value: HalfSide.right, icon: Icon(Icons.arrow_right), label: Text('Right')),
       ],
       selected: {selectedSide},
       style: ButtonStyle(

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 class LoadingError extends StatelessWidget {
+  const LoadingError({super.key, required this.message, required this.onRetry});
   final String message;
   final VoidCallback onRetry;
-
-  const LoadingError({super.key, required this.message, required this.onRetry});
 
   @override
   Widget build(BuildContext context) {

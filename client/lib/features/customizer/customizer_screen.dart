@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:pizzaf/core/di/app_scope.dart';
+import 'package:pizzaf/core/widgets/app_background.dart';
+import 'package:pizzaf/core/widgets/price_text.dart';
+import 'package:pizzaf/features/customizer/customizer_notifier.dart';
+import 'package:pizzaf/features/customizer/widgets/half_selector.dart';
+import 'package:pizzaf/features/customizer/widgets/pizza_canvas.dart';
+import 'package:pizzaf/features/menu/widgets/pizza_card.dart';
+import 'package:pizzaf/theme/app_theme.dart';
 import 'package:shared/shared.dart';
 
-import '../../core/di/app_scope.dart';
-import '../../core/widgets/app_background.dart';
-import '../../core/widgets/price_text.dart';
-import '../../theme/app_theme.dart';
-import 'customizer_notifier.dart';
-import 'widgets/half_selector.dart';
-import 'widgets/pizza_canvas.dart';
-
 class CustomizerScreen extends StatefulWidget {
-  final PizzaInfo initialPizza;
-
   const CustomizerScreen({super.key, required this.initialPizza});
+  final PizzaInfo initialPizza;
 
   @override
   State<CustomizerScreen> createState() => _CustomizerScreenState();
@@ -24,9 +23,7 @@ class _CustomizerScreenState extends State<CustomizerScreen> {
   @override
   void initState() {
     super.initState();
-    _notifier = CustomizerNotifier(
-      PizzaType.values.byName(widget.initialPizza.id),
-    );
+    _notifier = CustomizerNotifier(PizzaType.values.byName(widget.initialPizza.id));
   }
 
   @override
@@ -51,8 +48,8 @@ class _CustomizerScreenState extends State<CustomizerScreen> {
                 padding: const EdgeInsets.all(16),
                 children: [
                   Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 380),
+                    child: SizedBox(
+                      width: _pizzaCanvasSize(context),
                       child: PizzaCanvas(
                         leftType: _notifier.leftType,
                         rightType: _notifier.rightType,
@@ -69,24 +66,18 @@ class _CustomizerScreenState extends State<CustomizerScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Text(
-                    'Choose flavor',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                  Text('Choose flavor', style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 10),
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
                     children: [
                       for (final pizza in pizzas)
-                        ChoiceChip(
-                          label: Text(pizza.name),
+                        _PizzaChoiceChip(
+                          pizza: pizza,
                           selected: _isSelected(pizza.id),
-                          selectedColor: AppTheme.accent,
-                          onSelected: (_) {
-                            _notifier.applyType(
-                              PizzaType.values.byName(pizza.id),
-                            );
+                          onSelected: () {
+                            _notifier.applyType(PizzaType.values.byName(pizza.id));
                           },
                         ),
                     ],
@@ -111,15 +102,13 @@ class _CustomizerScreenState extends State<CustomizerScreen> {
                           const Divider(height: 24),
                           Row(
                             children: [
-                              const Text(
-                                'Total',
-                                style: TextStyle(fontWeight: FontWeight.w900),
-                              ),
+                              const Text('Total', style: TextStyle(fontWeight: FontWeight.w900)),
                               const Spacer(),
                               PriceText(
                                 _notifier.price,
-                                style: Theme.of(context).textTheme.titleLarge
-                                    ?.copyWith(color: AppTheme.accentAlt),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.titleLarge?.copyWith(color: AppTheme.accentAlt),
                               ),
                             ],
                           ),
@@ -130,12 +119,10 @@ class _CustomizerScreenState extends State<CustomizerScreen> {
                   const SizedBox(height: 16),
                   FilledButton.icon(
                     onPressed: () {
-                      AppScope.of(
+                      AppScope.of(context).cartNotifier.add(_notifier.cartPizza);
+                      ScaffoldMessenger.of(
                         context,
-                      ).cartNotifier.add(_notifier.cartPizza);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Added to cart')),
-                      );
+                      ).showSnackBar(const SnackBar(content: Text('Added to cart')));
                     },
                     icon: const Icon(Icons.add_shopping_cart),
                     label: const Text('Add to cart'),
@@ -155,18 +142,39 @@ class _CustomizerScreenState extends State<CustomizerScreen> {
         : _notifier.rightType;
     return selected.name == pizzaId;
   }
+
+  double _pizzaCanvasSize(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width - 32;
+    return width.clamp(260.0, 380.0);
+  }
+}
+
+class _PizzaChoiceChip extends StatelessWidget {
+  const _PizzaChoiceChip({required this.pizza, required this.selected, required this.onSelected});
+  final PizzaInfo pizza;
+  final bool selected;
+  final VoidCallback onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return ChoiceChip(
+      selected: selected,
+      selectedColor: AppTheme.accent,
+      onSelected: (_) => onSelected(),
+      avatar: CircleAvatar(
+        backgroundColor: AppTheme.surfaceHigh,
+        child: PizzaPreview(typeName: pizza.id, size: 24),
+      ),
+      label: Text(pizza.name),
+    );
+  }
 }
 
 class _SummaryRow extends StatelessWidget {
+  const _SummaryRow({required this.label, required this.name, required this.price});
   final String label;
   final String name;
   final double price;
-
-  const _SummaryRow({
-    required this.label,
-    required this.name,
-    required this.price,
-  });
 
   @override
   Widget build(BuildContext context) {

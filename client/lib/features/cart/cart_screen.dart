@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
-import '../../core/di/app_scope.dart';
-import '../../core/widgets/app_background.dart';
-import '../../core/widgets/price_text.dart';
-import '../../navigation/app_router.dart';
-import '../../theme/app_theme.dart';
-import 'widgets/cart_item_tile.dart';
+import 'package:pizzaf/core/di/app_scope.dart';
+import 'package:pizzaf/core/widgets/app_background.dart';
+import 'package:pizzaf/core/widgets/price_text.dart';
+import 'package:pizzaf/features/cart/widgets/cart_item_tile.dart';
+import 'package:pizzaf/navigation/app_router.dart';
+import 'package:pizzaf/theme/app_theme.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -26,10 +25,7 @@ class CartScreen extends StatelessWidget {
             builder: (context, _) {
               if (cart.isEmpty) {
                 return const Center(
-                  child: Text(
-                    'Your cart is empty',
-                    style: TextStyle(color: AppTheme.textMuted),
-                  ),
+                  child: Text('Your cart is empty', style: TextStyle(color: AppTheme.textMuted)),
                 );
               }
 
@@ -42,9 +38,7 @@ class CartScreen extends StatelessWidget {
                       separatorBuilder: (_, _) => const SizedBox(height: 10),
                       itemBuilder: (context, index) {
                         return Dismissible(
-                          key: ValueKey(
-                            '${cart.items[index].displayName}-$index',
-                          ),
+                          key: ValueKey('${cart.items[index].displayName}-$index'),
                           direction: DismissDirection.endToStart,
                           background: Container(
                             alignment: Alignment.centerRight,
@@ -65,11 +59,7 @@ class CartScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: AppTheme.surface,
-                      border: Border(
-                        top: BorderSide(
-                          color: Colors.white.withValues(alpha: 0.08),
-                        ),
-                      ),
+                      border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.08))),
                     ),
                     child: SafeArea(
                       top: false,
@@ -79,14 +69,8 @@ class CartScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Text(
-                                'Total',
-                                style: TextStyle(color: AppTheme.textMuted),
-                              ),
-                              PriceText(
-                                cart.total,
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
+                              const Text('Total', style: TextStyle(color: AppTheme.textMuted)),
+                              PriceText(cart.total, style: Theme.of(context).textTheme.titleLarge),
                             ],
                           ),
                           const SizedBox(width: 16),
@@ -95,9 +79,7 @@ class CartScreen extends StatelessWidget {
                               onPressed: orders.loading
                                   ? null
                                   : () async {
-                                      final order = await orders.placeOrder(
-                                        cart.items,
-                                      );
+                                      final order = await orders.placeOrder(cart.items);
                                       if (!context.mounted || order == null) {
                                         return;
                                       }
@@ -108,9 +90,7 @@ class CartScreen extends StatelessWidget {
                               icon: orders.loading
                                   ? const SizedBox.square(
                                       dimension: 18,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      ),
+                                      child: CircularProgressIndicator(strokeWidth: 2),
                                     )
                                   : const Icon(Icons.local_shipping_outlined),
                               label: const Text('Place order'),

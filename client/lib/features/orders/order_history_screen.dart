@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pizzaf/core/di/app_scope.dart';
+import 'package:pizzaf/core/widgets/app_background.dart';
+import 'package:pizzaf/core/widgets/loading_error.dart';
+import 'package:pizzaf/core/widgets/price_text.dart';
+import 'package:pizzaf/navigation/app_router.dart';
+import 'package:pizzaf/theme/app_theme.dart';
 import 'package:shared/shared.dart';
-
-import '../../core/di/app_scope.dart';
-import '../../core/widgets/app_background.dart';
-import '../../core/widgets/loading_error.dart';
-import '../../core/widgets/price_text.dart';
-import '../../navigation/app_router.dart';
-import '../../theme/app_theme.dart';
 
 class OrderHistoryScreen extends StatefulWidget {
   const OrderHistoryScreen({super.key});
@@ -38,17 +37,11 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
               return const Center(child: CircularProgressIndicator());
             }
             if (orders.error != null && orders.orders.isEmpty) {
-              return LoadingError(
-                message: orders.error!,
-                onRetry: orders.loadOrders,
-              );
+              return LoadingError(message: orders.error!, onRetry: orders.loadOrders);
             }
             if (orders.orders.isEmpty) {
               return const Center(
-                child: Text(
-                  'No orders yet',
-                  style: TextStyle(color: AppTheme.textMuted),
-                ),
+                child: Text('No orders yet', style: TextStyle(color: AppTheme.textMuted)),
               );
             }
 
@@ -78,10 +71,9 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
 }
 
 class _OrderTile extends StatelessWidget {
+  const _OrderTile({required this.order, required this.onTap});
   final Order order;
   final VoidCallback onTap;
-
-  const _OrderTile({required this.order, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -100,10 +92,7 @@ class _OrderTile extends StatelessWidget {
           children: [
             Text(
               order.status.displayName,
-              style: const TextStyle(
-                color: AppTheme.accentAlt,
-                fontWeight: FontWeight.w800,
-              ),
+              style: const TextStyle(color: AppTheme.accentAlt, fontWeight: FontWeight.w800),
             ),
             PriceText(order.totalPrice),
           ],

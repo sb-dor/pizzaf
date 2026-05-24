@@ -4,14 +4,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared/shared.dart';
 
 class TokenStorage {
+  TokenStorage({FlutterSecureStorage? storage})
+    : _storage = storage ?? const FlutterSecureStorage();
   static const _accessTokenKey = 'pizzaf.accessToken';
   static const _refreshTokenKey = 'pizzaf.refreshToken';
   static const _userKey = 'pizzaf.user';
 
   final FlutterSecureStorage _storage;
-
-  TokenStorage({FlutterSecureStorage? storage})
-    : _storage = storage ?? const FlutterSecureStorage();
 
   Future<String?> readAccessToken() => _storage.read(key: _accessTokenKey);
 
@@ -25,10 +24,7 @@ class TokenStorage {
 
   Future<void> saveAuth(AuthResponse response) async {
     await saveTokens(response.tokens);
-    await _storage.write(
-      key: _userKey,
-      value: jsonEncode(response.user.toJson()),
-    );
+    await _storage.write(key: _userKey, value: jsonEncode(response.user.toJson()));
   }
 
   Future<void> saveTokens(AuthTokens tokens) async {

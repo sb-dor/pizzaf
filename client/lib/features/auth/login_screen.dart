@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../../core/di/app_scope.dart';
-import '../../core/widgets/app_background.dart';
-import '../../theme/app_theme.dart';
-import 'auth_notifier.dart';
+import 'package:pizzaf/core/di/app_scope.dart';
+import 'package:pizzaf/core/widgets/app_background.dart';
+import 'package:pizzaf/features/auth/auth_notifier.dart';
+import 'package:pizzaf/theme/app_theme.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -45,10 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(
-                          'PizzaF',
-                          style: Theme.of(context).textTheme.headlineLarge,
-                        ),
+                        Text('PizzaF', style: Theme.of(context).textTheme.headlineLarge),
                         const SizedBox(height: 8),
                         const Text(
                           'Build half-and-half pizzas and track every order.',
@@ -64,23 +60,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   Text(
-                                    _registerMode
-                                        ? 'Create account'
-                                        : 'Welcome back',
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.titleLarge,
+                                    _registerMode ? 'Create account' : 'Welcome back',
+                                    style: Theme.of(context).textTheme.titleLarge,
                                   ),
                                   const SizedBox(height: 16),
                                   if (_registerMode) ...[
                                     TextFormField(
                                       controller: _nameController,
                                       textInputAction: TextInputAction.next,
-                                      decoration: const InputDecoration(
-                                        labelText: 'Name',
-                                      ),
-                                      validator: (value) =>
-                                          value == null || value.trim().isEmpty
+                                      decoration: const InputDecoration(labelText: 'Name'),
+                                      validator: (value) => value == null || value.trim().isEmpty
                                           ? 'Enter your name'
                                           : null,
                                     ),
@@ -90,11 +79,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     controller: _emailController,
                                     keyboardType: TextInputType.emailAddress,
                                     textInputAction: TextInputAction.next,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Email',
-                                    ),
-                                    validator: (value) =>
-                                        value == null || !value.contains('@')
+                                    decoration: const InputDecoration(labelText: 'Email'),
+                                    validator: (value) => value == null || !value.contains('@')
                                         ? 'Enter a valid email'
                                         : null,
                                   ),
@@ -102,11 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   TextFormField(
                                     controller: _passwordController,
                                     obscureText: true,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Password',
-                                    ),
-                                    validator: (value) =>
-                                        value == null || value.length < 6
+                                    decoration: const InputDecoration(labelText: 'Password'),
+                                    validator: (value) => value == null || value.length < 6
                                         ? 'Use at least 6 characters'
                                         : null,
                                     onFieldSubmitted: (_) => _submit(auth),
@@ -115,28 +98,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                     const SizedBox(height: 12),
                                     Text(
                                       auth.error!,
-                                      style: const TextStyle(
-                                        color: AppTheme.danger,
-                                      ),
+                                      style: const TextStyle(color: AppTheme.danger),
                                     ),
                                   ],
                                   const SizedBox(height: 18),
                                   FilledButton(
-                                    onPressed: auth.busy
-                                        ? null
-                                        : () => _submit(auth),
+                                    onPressed: auth.busy ? null : () => _submit(auth),
                                     child: auth.busy
                                         ? const SizedBox.square(
                                             dimension: 18,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2,
-                                            ),
+                                            child: CircularProgressIndicator(strokeWidth: 2),
                                           )
-                                        : Text(
-                                            _registerMode
-                                                ? 'Register'
-                                                : 'Log in',
-                                          ),
+                                        : Text(_registerMode ? 'Register' : 'Log in'),
                                   ),
                                   TextButton(
                                     onPressed: auth.busy

@@ -2,9 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared/shared.dart';
 
 class CustomizerNotifier extends ChangeNotifier {
-  CustomizerNotifier(PizzaType initial)
-    : _leftType = initial,
-      _rightType = initial;
+  CustomizerNotifier(PizzaType initial) : _leftType = initial, _rightType = initial;
 
   PizzaType _leftType;
   PizzaType _rightType;

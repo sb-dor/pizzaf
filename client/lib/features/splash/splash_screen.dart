@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../core/widgets/app_background.dart';
-import '../../theme/app_theme.dart';
+import 'package:pizzaf/core/widgets/app_background.dart';
+import 'package:pizzaf/theme/app_theme.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -16,10 +16,7 @@ class SplashScreen extends StatelessWidget {
             children: [
               _PizzaMark(size: 96),
               SizedBox(height: 20),
-              Text(
-                'PizzaF',
-                style: TextStyle(fontSize: 34, fontWeight: FontWeight.w900),
-              ),
+              Text('PizzaF', style: TextStyle(fontSize: 34, fontWeight: FontWeight.w900)),
               SizedBox(height: 24),
               CircularProgressIndicator(color: AppTheme.accent),
             ],
@@ -31,9 +28,8 @@ class SplashScreen extends StatelessWidget {
 }
 
 class _PizzaMark extends StatelessWidget {
-  final double size;
-
   const _PizzaMark({required this.size});
+  final double size;
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +43,7 @@ class _PizzaMarkPainter extends CustomPainter {
     final center = size.center(Offset.zero);
     final radius = size.shortestSide / 2;
     canvas.drawCircle(center, radius, Paint()..color = AppTheme.accentAlt);
-    canvas.drawCircle(
-      center,
-      radius * 0.86,
-      Paint()..color = const Color(0xFFFFD166),
-    );
+    canvas.drawCircle(center, radius * 0.86, Paint()..color = const Color(0xFFFFD166));
     canvas.drawCircle(center, radius * 0.16, Paint()..color = AppTheme.accent);
     canvas.drawCircle(
       center + Offset(radius * 0.34, -radius * 0.18),

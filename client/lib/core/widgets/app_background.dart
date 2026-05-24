@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_theme.dart';
+import 'package:pizzaf/theme/app_theme.dart';
 
 class AppBackground extends StatelessWidget {
-  final Widget child;
-
   const AppBackground({super.key, required this.child});
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

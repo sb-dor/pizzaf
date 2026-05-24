@@ -1,20 +1,12 @@
 import 'package:flutter/widgets.dart';
-
-import '../../features/auth/auth_notifier.dart';
-import '../../features/cart/cart_notifier.dart';
-import '../../features/menu/menu_notifier.dart';
-import '../../features/orders/orders_notifier.dart';
-import '../api/api_client.dart';
-import '../api/token_storage.dart';
+import 'package:pizzaf/core/api/api_client.dart';
+import 'package:pizzaf/core/api/token_storage.dart';
+import 'package:pizzaf/features/auth/auth_notifier.dart';
+import 'package:pizzaf/features/cart/cart_notifier.dart';
+import 'package:pizzaf/features/menu/menu_notifier.dart';
+import 'package:pizzaf/features/orders/orders_notifier.dart';
 
 class AppScope extends InheritedWidget {
-  final ApiClient apiClient;
-  final TokenStorage tokenStorage;
-  final AuthNotifier authNotifier;
-  final MenuNotifier menuNotifier;
-  final CartNotifier cartNotifier;
-  final OrdersNotifier ordersNotifier;
-
   const AppScope({
     super.key,
     required this.apiClient,
@@ -25,6 +17,12 @@ class AppScope extends InheritedWidget {
     required this.ordersNotifier,
     required super.child,
   });
+  final ApiClient apiClient;
+  final TokenStorage tokenStorage;
+  final AuthNotifier authNotifier;
+  final MenuNotifier menuNotifier;
+  final CartNotifier cartNotifier;
+  final OrdersNotifier ordersNotifier;
 
   static AppScope of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<AppScope>();

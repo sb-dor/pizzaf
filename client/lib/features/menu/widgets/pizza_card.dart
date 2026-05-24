@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pizzaf/core/widgets/price_text.dart';
+import 'package:pizzaf/theme/app_theme.dart';
 import 'package:shared/shared.dart';
 
-import '../../../core/widgets/price_text.dart';
-import '../../../theme/app_theme.dart';
-
 class PizzaCard extends StatelessWidget {
+  const PizzaCard({super.key, required this.pizza, required this.onCustomize});
   final PizzaInfo pizza;
   final VoidCallback onCustomize;
-
-  const PizzaCard({super.key, required this.pizza, required this.onCustomize});
 
   @override
   Widget build(BuildContext context) {
@@ -33,24 +31,14 @@ class PizzaCard extends StatelessWidget {
                         errorBuilder: (context, error, stackTrace) {
                           return ColoredBox(
                             color: AppTheme.surfaceHigh,
-                            child: Center(
-                              child: PizzaPreview(
-                                typeName: pizza.id,
-                                size: 116,
-                              ),
-                            ),
+                            child: Center(child: PizzaPreview(typeName: pizza.id, size: 116)),
                           );
                         },
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
                           return ColoredBox(
                             color: AppTheme.surfaceHigh,
-                            child: Center(
-                              child: PizzaPreview(
-                                typeName: pizza.id,
-                                size: 116,
-                              ),
-                            ),
+                            child: Center(child: PizzaPreview(typeName: pizza.id, size: 116)),
                           );
                         },
                       ),
@@ -59,10 +47,7 @@ class PizzaCard extends StatelessWidget {
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.black.withValues(alpha: 0.18),
-                            ],
+                            colors: [Colors.transparent, Colors.black.withValues(alpha: 0.18)],
                           ),
                         ),
                       ),
@@ -89,15 +74,9 @@ class PizzaCard extends StatelessWidget {
                 children: [
                   PriceText(
                     pizza.halfPrice,
-                    style: const TextStyle(
-                      color: AppTheme.accentAlt,
-                      fontWeight: FontWeight.w900,
-                    ),
+                    style: const TextStyle(color: AppTheme.accentAlt, fontWeight: FontWeight.w900),
                   ),
-                  const Text(
-                    ' / half',
-                    style: TextStyle(color: AppTheme.textMuted),
-                  ),
+                  const Text(' / half', style: TextStyle(color: AppTheme.textMuted)),
                   const Spacer(),
                   const Icon(Icons.tune, color: AppTheme.accent),
                 ],
@@ -111,24 +90,19 @@ class PizzaCard extends StatelessWidget {
 }
 
 class PizzaPreview extends StatelessWidget {
+  const PizzaPreview({super.key, required this.typeName, required this.size});
   final String typeName;
   final double size;
 
-  const PizzaPreview({super.key, required this.typeName, required this.size});
-
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size.square(size),
-      painter: PizzaPreviewPainter(typeName),
-    );
+    return CustomPaint(size: Size.square(size), painter: PizzaPreviewPainter(typeName));
   }
 }
 
 class PizzaPreviewPainter extends CustomPainter {
-  final String typeName;
-
   PizzaPreviewPainter(this.typeName);
+  final String typeName;
 
   @override
   void paint(Canvas canvas, Size size) {

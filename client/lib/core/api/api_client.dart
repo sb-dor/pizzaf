@@ -2,18 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:pizzaf/core/api/token_storage.dart';
 import 'package:shared/shared.dart';
 
-import 'token_storage.dart';
-
 class ApiClient {
-  ApiClient({
-    required TokenStorage tokenStorage,
-    http.Client? httpClient,
-    String? baseUrl,
-  }) : _tokenStorage = tokenStorage,
-       _httpClient = httpClient ?? http.Client(),
-       baseUrl = (baseUrl ?? _defaultBaseUrl()).replaceAll(RegExp(r'/$'), '');
+  ApiClient({required TokenStorage tokenStorage, http.Client? httpClient, String? baseUrl})
+    : _tokenStorage = tokenStorage,
+      _httpClient = httpClient ?? http.Client(),
+      baseUrl = (baseUrl ?? _defaultBaseUrl()).replaceAll(RegExp(r'/$'), '');
 
   final TokenStorage _tokenStorage;
   final http.Client _httpClient;
@@ -52,18 +48,12 @@ class ApiClient {
   Future<void> logout() async {
     final refreshToken = await _tokenStorage.readRefreshToken();
     if (refreshToken == null) return;
-    await _sendJson(
-      'POST',
-      '/auth/logout',
-      body: {'refreshToken': refreshToken},
-    );
+    await _sendJson('POST', '/auth/logout', body: {'refreshToken': refreshToken});
   }
 
   Future<List<PizzaInfo>> getPizzas() async {
     final json = await _sendJson('GET', '/pizzas/');
-    return (json as List)
-        .map((item) => PizzaInfo.fromJson(item as Map<String, dynamic>))
-        .toList();
+    return (json as List).map((item) => PizzaInfo.fromJson(item as Map<String, dynamic>)).toList();
   }
 
   Future<Order> createOrder(CreateOrderRequest request) async {
@@ -73,9 +63,7 @@ class ApiClient {
 
   Future<List<Order>> getOrders() async {
     final json = await _sendJson('GET', '/orders/');
-    return (json as List)
-        .map((item) => Order.fromJson(item as Map<String, dynamic>))
-        .toList();
+    return (json as List).map((item) => Order.fromJson(item as Map<String, dynamic>)).toList();
   }
 
   Future<Order> getOrder(String id) async {
@@ -90,12 +78,7 @@ class ApiClient {
     bool authenticated = true,
     bool retryOnUnauthorized = true,
   }) async {
-    final response = await _rawRequest(
-      method,
-      path,
-      body: body,
-      authenticated: authenticated,
-    );
+    final response = await _rawRequest(method, path, body: body, authenticated: authenticated);
 
     if (response.statusCode == 401 && authenticated && retryOnUnauthorized) {
       final refreshed = await _refreshTokens();
@@ -168,10 +151,9 @@ class ApiClient {
 }
 
 class ApiException implements Exception {
+  const ApiException(this.message, {this.statusCode});
   final String message;
   final int? statusCode;
-
-  const ApiException(this.message, {this.statusCode});
 
   @override
   String toString() => message;

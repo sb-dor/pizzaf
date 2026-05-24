@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 class PriceText extends StatelessWidget {
+  const PriceText(this.value, {super.key, this.style});
   final double value;
   final TextStyle? style;
-
-  const PriceText(this.value, {super.key, this.style});
 
   @override
   Widget build(BuildContext context) {

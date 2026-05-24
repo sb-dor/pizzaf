@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:pizzaf/core/di/app_scope.dart';
+import 'package:pizzaf/core/widgets/app_background.dart';
+import 'package:pizzaf/core/widgets/price_text.dart';
+import 'package:pizzaf/theme/app_theme.dart';
 import 'package:shared/shared.dart';
 
-import '../../core/di/app_scope.dart';
-import '../../core/widgets/app_background.dart';
-import '../../core/widgets/price_text.dart';
-import '../../theme/app_theme.dart';
-
 class OrderTrackingScreen extends StatefulWidget {
-  final Order order;
-
   const OrderTrackingScreen({super.key, required this.order});
+  final Order order;
 
   @override
   State<OrderTrackingScreen> createState() => _OrderTrackingScreenState();
@@ -64,9 +62,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                             const Spacer(),
                             PriceText(
                               order.totalPrice,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w900,
-                              ),
+                              style: const TextStyle(fontWeight: FontWeight.w900),
                             ),
                           ],
                         ),
@@ -91,15 +87,10 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
 }
 
 class _StatusStep extends StatelessWidget {
+  const _StatusStep({required this.status, required this.completed, required this.last});
   final OrderStatus status;
   final bool completed;
   final bool last;
-
-  const _StatusStep({
-    required this.status,
-    required this.completed,
-    required this.last,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -128,15 +119,9 @@ class _StatusStep extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  status.displayName,
-                  style: const TextStyle(fontWeight: FontWeight.w900),
-                ),
+                Text(status.displayName, style: const TextStyle(fontWeight: FontWeight.w900)),
                 const SizedBox(height: 2),
-                Text(
-                  status.description,
-                  style: const TextStyle(color: AppTheme.textMuted),
-                ),
+                Text(status.description, style: const TextStyle(color: AppTheme.textMuted)),
               ],
             ),
           ),

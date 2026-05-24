@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'core/di/app_scope.dart';
-import 'features/auth/auth_notifier.dart';
-import 'features/auth/login_screen.dart';
-import 'features/menu/menu_screen.dart';
-import 'features/splash/splash_screen.dart';
-import 'theme/app_theme.dart';
+import 'package:pizzaf/core/di/app_scope.dart';
+import 'package:pizzaf/features/auth/auth_notifier.dart';
+import 'package:pizzaf/features/auth/login_screen.dart';
+import 'package:pizzaf/features/menu/menu_screen.dart';
+import 'package:pizzaf/features/splash/splash_screen.dart';
+import 'package:pizzaf/theme/app_theme.dart';
 
 class PizzaFApp extends StatefulWidget {
   const PizzaFApp({super.key});

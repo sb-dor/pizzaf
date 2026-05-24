@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:pizzaf/core/api/api_client.dart';
 import 'package:shared/shared.dart';
-
-import '../../core/api/api_client.dart';
 
 class MenuNotifier extends ChangeNotifier {
   MenuNotifier(this._apiClient);

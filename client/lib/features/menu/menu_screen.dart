@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
-import '../../core/di/app_scope.dart';
-import '../../core/widgets/app_background.dart';
-import '../../core/widgets/loading_error.dart';
-import '../../navigation/app_router.dart';
-import '../../theme/app_theme.dart';
-import 'widgets/pizza_card.dart';
+import 'package:pizzaf/core/di/app_scope.dart';
+import 'package:pizzaf/core/widgets/app_background.dart';
+import 'package:pizzaf/core/widgets/loading_error.dart';
+import 'package:pizzaf/features/menu/widgets/pizza_card.dart';
+import 'package:pizzaf/navigation/app_router.dart';
+import 'package:pizzaf/theme/app_theme.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -90,27 +89,22 @@ class _MenuScreenState extends State<MenuScreen> {
                     }
                     if (menu.error != null && menu.pizzas.isEmpty) {
                       return SliverFillRemaining(
-                        child: LoadingError(
-                          message: menu.error!,
-                          onRetry: menu.load,
-                        ),
+                        child: LoadingError(message: menu.error!, onRetry: menu.load),
                       );
                     }
                     return SliverGrid.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 260,
-                            mainAxisExtent: 300,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                          ),
+                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 260,
+                        mainAxisExtent: 300,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                      ),
                       itemCount: menu.pizzas.length,
                       itemBuilder: (context, index) {
                         final pizza = menu.pizzas[index];
                         return PizzaCard(
                           pizza: pizza,
-                          onCustomize: () =>
-                              AppRouter.openCustomizer(context, pizza: pizza),
+                          onCustomize: () => AppRouter.openCustomizer(context, pizza: pizza),
                         );
                       },
                     );

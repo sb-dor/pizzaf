@@ -1,19 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:pizzaf/core/api/api_client.dart';
+import 'package:pizzaf/core/api/token_storage.dart';
 import 'package:shared/shared.dart';
-
-import '../../core/api/api_client.dart';
-import '../../core/api/token_storage.dart';
 
 enum AuthStatus { checking, authenticated, unauthenticated }
 
 class AuthNotifier extends ChangeNotifier {
-  AuthNotifier({
-    required ApiClient apiClient,
-    required TokenStorage tokenStorage,
-  }) : _apiClient = apiClient,
-       _tokenStorage = tokenStorage;
+  AuthNotifier({required ApiClient apiClient, required TokenStorage tokenStorage})
+    : _apiClient = apiClient,
+      _tokenStorage = tokenStorage;
 
   final ApiClient _apiClient;
   final TokenStorage _tokenStorage;
@@ -44,16 +41,12 @@ class AuthNotifier extends ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
-    await _authenticate(
-      () => _apiClient.login(LoginRequest(email: email, password: password)),
-    );
+    await _authenticate(() => _apiClient.login(LoginRequest(email: email, password: password)));
   }
 
   Future<void> register(String name, String email, String password) async {
     await _authenticate(
-      () => _apiClient.register(
-        RegisterRequest(name: name, email: email, password: password),
-      ),
+      () => _apiClient.register(RegisterRequest(name: name, email: email, password: password)),
     );
   }
 
