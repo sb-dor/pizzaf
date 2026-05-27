@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pizzaf/features/customizer/customizer_notifier.dart';
 import 'package:shared/shared.dart';

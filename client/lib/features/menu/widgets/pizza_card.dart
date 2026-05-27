@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'package:flutter/material.dart';
 import 'package:pizzaf/core/widgets/price_text.dart';
 import 'package:pizzaf/theme/app_theme.dart';

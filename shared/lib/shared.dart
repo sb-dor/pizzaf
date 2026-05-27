@@ -1,5 +1,5 @@
 /// Shared models and DTOs for PizzaF app.
-library shared;
+library;
 
 // Models
 export 'src/models/pizza.dart';

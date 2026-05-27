@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -15,6 +16,7 @@ class ApiClient {
   final http.Client _httpClient;
   final String baseUrl;
   VoidCallback? onUnauthorized;
+  Completer<bool>? _refreshCompleter;
 
   static String _defaultBaseUrl() {
     const configured = String.fromEnvironment('PIZZAF_API_BASE_URL');
@@ -129,6 +131,26 @@ class ApiClient {
   }
 
   Future<bool> _refreshTokens() async {
+    final activeRefresh = _refreshCompleter;
+    if (activeRefresh != null) {
+      return activeRefresh.future;
+    }
+
+    final completer = Completer<bool>();
+    _refreshCompleter = completer;
+
+    unawaited(
+      _executeRefresh().then(completer.complete).catchError(completer.completeError).whenComplete(
+        () {
+          _refreshCompleter = null;
+        },
+      ),
+    );
+
+    return completer.future;
+  }
+
+  Future<bool> _executeRefresh() async {
     final refreshToken = await _tokenStorage.readRefreshToken();
     if (refreshToken == null) return false;
 
